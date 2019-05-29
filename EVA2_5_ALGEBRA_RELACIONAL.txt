@@ -1,0 +1,1083 @@
+Microsoft Windows [Versión 10.0.17134.590]
+(c) 2018 Microsoft Corporation. Todos los derechos reservados.
+
+Copyright (c) 2016, 2019, Oracle and/or its affiliates. All rights reserved.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching schema names for autocompletion... Press ^C to stop.
+Your MySQL connection id is 9
+Server version: 8.0.15 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| creditcard         |
+| datoscoches        |
+| dbclientes         |
+| ejercicios         |
+| eva_1              |
+| eva_2              |
+| exa_baseuno        |
+| information_schema |
+| mysql              |
+| performance_schema |
+| proyectotap        |
+| proyectotbb        |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+15 rows in set (0.0008 sec)
+
+ MySQL  localhost:3306 ssl  SQL > use sakila
+Default schema set to `sakila`.
+Fetching table and column names from `sakila` for auto-completion... Press ^C to stop.
+
+ MySQL  localhost:3306 ssl  sakila  SQL > show tables;
++----------------------------+
+| Tables_in_sakila           |
++----------------------------+
+| actor                      |
+| actor_info                 |
+| address                    |
+| category                   |
+| city                       |
+| country                    |
+| customer                   |
+| customer_list              |
+| film                       |
+| film_actor                 |
+| film_category              |
+| film_list                  |
+| film_text                  |
+| inventory                  |
+| language                   |
+| nicer_but_slower_film_list |
+| payment                    |
+| rental                     |
+| sales_by_film_category     |
+| sales_by_store             |
+| staff                      |
+| staff_list                 |
+| store                      |
++----------------------------+
+23 rows in set (0.0021 sec)
+
+ MySQL  localhost:3306 ssl  sakila  SQL > use eva_2
+Default schema set to `eva_2`.
+Fetching table and column names from `eva_2` for auto-completion... Press ^C to stop.
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > show tables;
++---------------------+
+| Tables_in_eva_2     |
++---------------------+
+| asignacion_targetas |
+| banco               |
+| clientes            |
+| clientes_banco      |
+| detail              |
+| detail_2            |
+| direccion           |
+| hijo                |
+| master              |
+| master_2            |
+| ordenes             |
+| padre               |
+| targetas            |
+| ventas_anuales      |
++---------------------+
+14 rows in set (0.0021 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > create table tablaA(
+                                      -> id int key auto_increment,
+                                      -> nombre varchar(10));
+Query OK, 0 rows affected (0.6234 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > create tableB like tablaA;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'tableB like tablaA' at line 1
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > create table tablaB like tablaA;
+Query OK, 0 rows affected (1.2822 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > desc tablaA;
++--------+-------------+------+-----+---------+----------------+
+| Field  | Type        | Null | Key | Default | Extra          |
++--------+-------------+------+-----+---------+----------------+
+| id     | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nombre | varchar(10) | YES  |     | NULL    |                |
++--------+-------------+------+-----+---------+----------------+
+2 rows in set (0.0406 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > desc tablaB;
++--------+-------------+------+-----+---------+----------------+
+| Field  | Type        | Null | Key | Default | Extra          |
++--------+-------------+------+-----+---------+----------------+
+| id     | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nombre | varchar(10) | YES  |     | NULL    |                |
++--------+-------------+------+-----+---------+----------------+
+2 rows in set (0.0023 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > INSERT into table tablaA(nombre)
+                                      -> values('A'),('B'),('C'),('D);
+                                      '> ';
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table tablaA(nombre)
+values('A'),('B'),('C'),('D);
+'' at line 1
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > INSERT into table tablaA(nombre) values('A'),('B'),('C'),('D');
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table tablaA(nombre) values('A'),('B'),('C'),('D')' at line 1
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > INSERT into tablaA(nombre) values('A'),('B'),('C'),('D');
+Query OK, 4 rows affected (0.4091 sec)
+
+Records: 4  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > INSERT into tablaB(nombre) values('A'),('B'),('X'),('Y');
+Query OK, 4 rows affected (0.3782 sec)
+
+Records: 4  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from tablaA,tablaB;
++----+--------+----+--------+
+| id | nombre | id | nombre |
++----+--------+----+--------+
+|  1 | A      |  1 | A      |
+|  2 | B      |  1 | A      |
+|  3 | C      |  1 | A      |
+|  4 | D      |  1 | A      |
+|  1 | A      |  2 | B      |
+|  2 | B      |  2 | B      |
+|  3 | C      |  2 | B      |
+|  4 | D      |  2 | B      |
+|  1 | A      |  3 | X      |
+|  2 | B      |  3 | X      |
+|  3 | C      |  3 | X      |
+|  4 | D      |  3 | X      |
+|  1 | A      |  4 | Y      |
+|  2 | B      |  4 | Y      |
+|  3 | C      |  4 | Y      |
+|  4 | D      |  4 | Y      |
++----+--------+----+--------+
+16 rows in set (0.0006 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select A.nombre, B.nombre
+                                      -> from tablaA A,tablaB B;
++--------+--------+
+| nombre | nombre |
++--------+--------+
+| A      | A      |
+| B      | A      |
+| C      | A      |
+| D      | A      |
+| A      | B      |
+| B      | B      |
+| C      | B      |
+| D      | B      |
+| A      | X      |
+| B      | X      |
+| C      | X      |
+| D      | X      |
+| A      | Y      |
+| B      | Y      |
+| C      | Y      |
+| D      | Y      |
++--------+--------+
+16 rows in set (0.0006 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select A.nombre as nomA, B.nombre nomB from tablaA A,tablaB B;
++------+------+
+| nomA | nomB |
++------+------+
+| A    | A    |
+| B    | A    |
+| C    | A    |
+| D    | A    |
+| A    | B    |
+| B    | B    |
+| C    | B    |
+| D    | B    |
+| A    | X    |
+| B    | X    |
+| C    | X    |
+| D    | X    |
+| A    | Y    |
+| B    | Y    |
+| C    | Y    |
+| D    | Y    |
++------+------+
+16 rows in set (0.0005 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > use sakila
+Default schema set to `sakila`.
+Fetching table and column names from `sakila` for auto-completion... Press ^C to stop.
+
+ MySQL  localhost:3306 ssl  sakila  SQL > show tables;
++----------------------------+
+| Tables_in_sakila           |
++----------------------------+
+| actor                      |
+| actor_info                 |
+| address                    |
+| category                   |
+| city                       |
+| country                    |
+| customer                   |
+| customer_list              |
+| film                       |
+| film_actor                 |
+| film_category              |
+| film_list                  |
+| film_text                  |
+| inventory                  |
+| language                   |
+| nicer_but_slower_film_list |
+| payment                    |
+| rental                     |
+| sales_by_film_category     |
+| sales_by_store             |
+| staff                      |
+| staff_list                 |
+| store                      |
++----------------------------+
+23 rows in set (0.0015 sec)
+
+ MySQL  localhost:3306 ssl  sakila  SQL > seletct count(*) from customer;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'seletct count(*) from customer' at line 1
+
+ MySQL  localhost:3306 ssl  sakila  SQL > select count(*) from customer;
++----------+
+| count(*) |
++----------+
+|      599 |
++----------+
+1 row in set (0.1418 sec)
+
+ MySQL  localhost:3306 ssl  sakila  SQL > select count(*) from film;
++----------+
+| count(*) |
++----------+
+|     1000 |
++----------+
+1 row in set (0.0599 sec)
+
+ MySQL  localhost:3306 ssl  sakila  SQL > desc customer;
++-------------+----------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type                 | Null | Key | Default           | Extra                                         |
++-------------+----------------------+------+-----+-------------------+-----------------------------------------------+
+| customer_id | smallint(5) unsigned | NO   | PRI | NULL              | auto_increment                                |
+| store_id    | tinyint(3) unsigned  | NO   | MUL | NULL              |                                               |
+| first_name  | varchar(45)          | NO   |     | NULL              |                                               |
+| last_name   | varchar(45)          | NO   | MUL | NULL              |                                               |
+| email       | varchar(50)          | YES  |     | NULL              |                                               |
+| address_id  | smallint(5) unsigned | NO   | MUL | NULL              |                                               |
+| active      | tinyint(1)           | NO   |     | 1                 |                                               |
+| create_date | datetime             | NO   |     | NULL              |                                               |
+| last_update | timestamp            | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+----------------------+------+-----+-------------------+-----------------------------------------------+
+9 rows in set (0.0017 sec)
+
+ MySQL  localhost:3306 ssl  sakila  SQL > desc film;
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| Field                | Type                                                                | Null | Key | Default           | Extra                                         |
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| film_id              | smallint(5) unsigned                                                | NO   | PRI | NULL              | auto_increment                                |
+| title                | varchar(255)                                                        | NO   | MUL | NULL              |                                               |
+| description          | text                                                                | YES  |     | NULL              |                                               |
+| release_year         | year(4)                                                             | YES  |     | NULL              |                                               |
+| language_id          | tinyint(3) unsigned                                                 | NO   | MUL | NULL              |                                               |
+| original_language_id | tinyint(3) unsigned                                                 | YES  | MUL | NULL              |                                               |
+| rental_duration      | tinyint(3) unsigned                                                 | NO   |     | 3                 |                                               |
+| rental_rate          | decimal(4,2)                                                        | NO   |     | 4.99              |                                               |
+| length               | smallint(5) unsigned                                                | YES  |     | NULL              |                                               |
+| replacement_cost     | decimal(5,2)                                                        | NO   |     | 19.99             |                                               |
+| rating               | enum('G','PG','PG-13','R','NC-17')                                  | YES  |     | G                 |                                               |
+| special_features     | set('Trailers','Commentaries','Deleted Scenes','Behind the Scenes') | YES  |     | NULL              |                                               |
+| last_update          | timestamp                                                           | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++----------------------+---------------------------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+13 rows in set (0.0020 sec)
+
+ MySQL  localhost:3306 ssl  sakila  SQL > select A.first_name, B.title from customer A, film B limit 100;
++------------+------------------+
+| first_name | title            |
++------------+------------------+
+| MARY       | ACADEMY DINOSAUR |
+| PATRICIA   | ACADEMY DINOSAUR |
+| LINDA      | ACADEMY DINOSAUR |
+| BARBARA    | ACADEMY DINOSAUR |
+| ELIZABETH  | ACADEMY DINOSAUR |
+| JENNIFER   | ACADEMY DINOSAUR |
+| MARIA      | ACADEMY DINOSAUR |
+| SUSAN      | ACADEMY DINOSAUR |
+| MARGARET   | ACADEMY DINOSAUR |
+| DOROTHY    | ACADEMY DINOSAUR |
+| LISA       | ACADEMY DINOSAUR |
+| NANCY      | ACADEMY DINOSAUR |
+| KAREN      | ACADEMY DINOSAUR |
+| BETTY      | ACADEMY DINOSAUR |
+| HELEN      | ACADEMY DINOSAUR |
+| SANDRA     | ACADEMY DINOSAUR |
+| DONNA      | ACADEMY DINOSAUR |
+| CAROL      | ACADEMY DINOSAUR |
+| RUTH       | ACADEMY DINOSAUR |
+| SHARON     | ACADEMY DINOSAUR |
+| MICHELLE   | ACADEMY DINOSAUR |
+| LAURA      | ACADEMY DINOSAUR |
+| SARAH      | ACADEMY DINOSAUR |
+| KIMBERLY   | ACADEMY DINOSAUR |
+| DEBORAH    | ACADEMY DINOSAUR |
+| JESSICA    | ACADEMY DINOSAUR |
+| SHIRLEY    | ACADEMY DINOSAUR |
+| CYNTHIA    | ACADEMY DINOSAUR |
+| ANGELA     | ACADEMY DINOSAUR |
+| MELISSA    | ACADEMY DINOSAUR |
+| BRENDA     | ACADEMY DINOSAUR |
+| AMY        | ACADEMY DINOSAUR |
+| ANNA       | ACADEMY DINOSAUR |
+| REBECCA    | ACADEMY DINOSAUR |
+| VIRGINIA   | ACADEMY DINOSAUR |
+| KATHLEEN   | ACADEMY DINOSAUR |
+| PAMELA     | ACADEMY DINOSAUR |
+| MARTHA     | ACADEMY DINOSAUR |
+| DEBRA      | ACADEMY DINOSAUR |
+| AMANDA     | ACADEMY DINOSAUR |
+| STEPHANIE  | ACADEMY DINOSAUR |
+| CAROLYN    | ACADEMY DINOSAUR |
+| CHRISTINE  | ACADEMY DINOSAUR |
+| MARIE      | ACADEMY DINOSAUR |
+| JANET      | ACADEMY DINOSAUR |
+| CATHERINE  | ACADEMY DINOSAUR |
+| FRANCES    | ACADEMY DINOSAUR |
+| ANN        | ACADEMY DINOSAUR |
+| JOYCE      | ACADEMY DINOSAUR |
+| DIANE      | ACADEMY DINOSAUR |
+| ALICE      | ACADEMY DINOSAUR |
+| JULIE      | ACADEMY DINOSAUR |
+| HEATHER    | ACADEMY DINOSAUR |
+| TERESA     | ACADEMY DINOSAUR |
+| DORIS      | ACADEMY DINOSAUR |
+| GLORIA     | ACADEMY DINOSAUR |
+| EVELYN     | ACADEMY DINOSAUR |
+| JEAN       | ACADEMY DINOSAUR |
+| CHERYL     | ACADEMY DINOSAUR |
+| MILDRED    | ACADEMY DINOSAUR |
+| KATHERINE  | ACADEMY DINOSAUR |
+| JOAN       | ACADEMY DINOSAUR |
+| ASHLEY     | ACADEMY DINOSAUR |
+| JUDITH     | ACADEMY DINOSAUR |
+| ROSE       | ACADEMY DINOSAUR |
+| JANICE     | ACADEMY DINOSAUR |
+| KELLY      | ACADEMY DINOSAUR |
+| NICOLE     | ACADEMY DINOSAUR |
+| JUDY       | ACADEMY DINOSAUR |
+| CHRISTINA  | ACADEMY DINOSAUR |
+| KATHY      | ACADEMY DINOSAUR |
+| THERESA    | ACADEMY DINOSAUR |
+| BEVERLY    | ACADEMY DINOSAUR |
+| DENISE     | ACADEMY DINOSAUR |
+| TAMMY      | ACADEMY DINOSAUR |
+| IRENE      | ACADEMY DINOSAUR |
+| JANE       | ACADEMY DINOSAUR |
+| LORI       | ACADEMY DINOSAUR |
+| RACHEL     | ACADEMY DINOSAUR |
+| MARILYN    | ACADEMY DINOSAUR |
+| ANDREA     | ACADEMY DINOSAUR |
+| KATHRYN    | ACADEMY DINOSAUR |
+| LOUISE     | ACADEMY DINOSAUR |
+| SARA       | ACADEMY DINOSAUR |
+| ANNE       | ACADEMY DINOSAUR |
+| JACQUELINE | ACADEMY DINOSAUR |
+| WANDA      | ACADEMY DINOSAUR |
+| BONNIE     | ACADEMY DINOSAUR |
+| JULIA      | ACADEMY DINOSAUR |
+| RUBY       | ACADEMY DINOSAUR |
+| LOIS       | ACADEMY DINOSAUR |
+| TINA       | ACADEMY DINOSAUR |
+| PHYLLIS    | ACADEMY DINOSAUR |
+| NORMA      | ACADEMY DINOSAUR |
+| PAULA      | ACADEMY DINOSAUR |
+| DIANA      | ACADEMY DINOSAUR |
+| ANNIE      | ACADEMY DINOSAUR |
+| LILLIAN    | ACADEMY DINOSAUR |
+| EMILY      | ACADEMY DINOSAUR |
+| ROBIN      | ACADEMY DINOSAUR |
++------------+------------------+
+100 rows in set (0.0525 sec)
+
+ MySQL  localhost:3306 ssl  sakila  SQL > select A.first_name, B.title from customer A, film B limit 600};
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '}' at line 1
+
+ MySQL  localhost:3306 ssl  sakila  SQL > select A.first_name, B.title from customer A, film B limit 600;
++-------------+------------------+
+| first_name  | title            |
++-------------+------------------+
+| MARY        | ACADEMY DINOSAUR |
+| PATRICIA    | ACADEMY DINOSAUR |
+| LINDA       | ACADEMY DINOSAUR |
+| BARBARA     | ACADEMY DINOSAUR |
+| ELIZABETH   | ACADEMY DINOSAUR |
+| JENNIFER    | ACADEMY DINOSAUR |
+| MARIA       | ACADEMY DINOSAUR |
+| SUSAN       | ACADEMY DINOSAUR |
+| MARGARET    | ACADEMY DINOSAUR |
+| DOROTHY     | ACADEMY DINOSAUR |
+| LISA        | ACADEMY DINOSAUR |
+| NANCY       | ACADEMY DINOSAUR |
+| KAREN       | ACADEMY DINOSAUR |
+| BETTY       | ACADEMY DINOSAUR |
+| HELEN       | ACADEMY DINOSAUR |
+| SANDRA      | ACADEMY DINOSAUR |
+| DONNA       | ACADEMY DINOSAUR |
+| CAROL       | ACADEMY DINOSAUR |
+| RUTH        | ACADEMY DINOSAUR |
+| SHARON      | ACADEMY DINOSAUR |
+| MICHELLE    | ACADEMY DINOSAUR |
+| LAURA       | ACADEMY DINOSAUR |
+| SARAH       | ACADEMY DINOSAUR |
+| KIMBERLY    | ACADEMY DINOSAUR |
+| DEBORAH     | ACADEMY DINOSAUR |
+| JESSICA     | ACADEMY DINOSAUR |
+| SHIRLEY     | ACADEMY DINOSAUR |
+| CYNTHIA     | ACADEMY DINOSAUR |
+| ANGELA      | ACADEMY DINOSAUR |
+| MELISSA     | ACADEMY DINOSAUR |
+| BRENDA      | ACADEMY DINOSAUR |
+| AMY         | ACADEMY DINOSAUR |
+| ANNA        | ACADEMY DINOSAUR |
+| REBECCA     | ACADEMY DINOSAUR |
+| VIRGINIA    | ACADEMY DINOSAUR |
+| KATHLEEN    | ACADEMY DINOSAUR |
+| PAMELA      | ACADEMY DINOSAUR |
+| MARTHA      | ACADEMY DINOSAUR |
+| DEBRA       | ACADEMY DINOSAUR |
+| AMANDA      | ACADEMY DINOSAUR |
+| STEPHANIE   | ACADEMY DINOSAUR |
+| CAROLYN     | ACADEMY DINOSAUR |
+| CHRISTINE   | ACADEMY DINOSAUR |
+| MARIE       | ACADEMY DINOSAUR |
+| JANET       | ACADEMY DINOSAUR |
+| CATHERINE   | ACADEMY DINOSAUR |
+| FRANCES     | ACADEMY DINOSAUR |
+| ANN         | ACADEMY DINOSAUR |
+| JOYCE       | ACADEMY DINOSAUR |
+| DIANE       | ACADEMY DINOSAUR |
+| ALICE       | ACADEMY DINOSAUR |
+| JULIE       | ACADEMY DINOSAUR |
+| HEATHER     | ACADEMY DINOSAUR |
+| TERESA      | ACADEMY DINOSAUR |
+| DORIS       | ACADEMY DINOSAUR |
+| GLORIA      | ACADEMY DINOSAUR |
+| EVELYN      | ACADEMY DINOSAUR |
+| JEAN        | ACADEMY DINOSAUR |
+| CHERYL      | ACADEMY DINOSAUR |
+| MILDRED     | ACADEMY DINOSAUR |
+| KATHERINE   | ACADEMY DINOSAUR |
+| JOAN        | ACADEMY DINOSAUR |
+| ASHLEY      | ACADEMY DINOSAUR |
+| JUDITH      | ACADEMY DINOSAUR |
+| ROSE        | ACADEMY DINOSAUR |
+| JANICE      | ACADEMY DINOSAUR |
+| KELLY       | ACADEMY DINOSAUR |
+| NICOLE      | ACADEMY DINOSAUR |
+| JUDY        | ACADEMY DINOSAUR |
+| CHRISTINA   | ACADEMY DINOSAUR |
+| KATHY       | ACADEMY DINOSAUR |
+| THERESA     | ACADEMY DINOSAUR |
+| BEVERLY     | ACADEMY DINOSAUR |
+| DENISE      | ACADEMY DINOSAUR |
+| TAMMY       | ACADEMY DINOSAUR |
+| IRENE       | ACADEMY DINOSAUR |
+| JANE        | ACADEMY DINOSAUR |
+| LORI        | ACADEMY DINOSAUR |
+| RACHEL      | ACADEMY DINOSAUR |
+| MARILYN     | ACADEMY DINOSAUR |
+| ANDREA      | ACADEMY DINOSAUR |
+| KATHRYN     | ACADEMY DINOSAUR |
+| LOUISE      | ACADEMY DINOSAUR |
+| SARA        | ACADEMY DINOSAUR |
+| ANNE        | ACADEMY DINOSAUR |
+| JACQUELINE  | ACADEMY DINOSAUR |
+| WANDA       | ACADEMY DINOSAUR |
+| BONNIE      | ACADEMY DINOSAUR |
+| JULIA       | ACADEMY DINOSAUR |
+| RUBY        | ACADEMY DINOSAUR |
+| LOIS        | ACADEMY DINOSAUR |
+| TINA        | ACADEMY DINOSAUR |
+| PHYLLIS     | ACADEMY DINOSAUR |
+| NORMA       | ACADEMY DINOSAUR |
+| PAULA       | ACADEMY DINOSAUR |
+| DIANA       | ACADEMY DINOSAUR |
+| ANNIE       | ACADEMY DINOSAUR |
+| LILLIAN     | ACADEMY DINOSAUR |
+| EMILY       | ACADEMY DINOSAUR |
+| ROBIN       | ACADEMY DINOSAUR |
+| PEGGY       | ACADEMY DINOSAUR |
+| CRYSTAL     | ACADEMY DINOSAUR |
+| GLADYS      | ACADEMY DINOSAUR |
+| RITA        | ACADEMY DINOSAUR |
+| DAWN        | ACADEMY DINOSAUR |
+| CONNIE      | ACADEMY DINOSAUR |
+| FLORENCE    | ACADEMY DINOSAUR |
+| TRACY       | ACADEMY DINOSAUR |
+| EDNA        | ACADEMY DINOSAUR |
+| TIFFANY     | ACADEMY DINOSAUR |
+| CARMEN      | ACADEMY DINOSAUR |
+| ROSA        | ACADEMY DINOSAUR |
+| CINDY       | ACADEMY DINOSAUR |
+| GRACE       | ACADEMY DINOSAUR |
+| WENDY       | ACADEMY DINOSAUR |
+| VICTORIA    | ACADEMY DINOSAUR |
+| EDITH       | ACADEMY DINOSAUR |
+| KIM         | ACADEMY DINOSAUR |
+| SHERRY      | ACADEMY DINOSAUR |
+| SYLVIA      | ACADEMY DINOSAUR |
+| JOSEPHINE   | ACADEMY DINOSAUR |
+| THELMA      | ACADEMY DINOSAUR |
+| SHANNON     | ACADEMY DINOSAUR |
+| SHEILA      | ACADEMY DINOSAUR |
+| ETHEL       | ACADEMY DINOSAUR |
+| ELLEN       | ACADEMY DINOSAUR |
+| ELAINE      | ACADEMY DINOSAUR |
+| MARJORIE    | ACADEMY DINOSAUR |
+| CARRIE      | ACADEMY DINOSAUR |
+| CHARLOTTE   | ACADEMY DINOSAUR |
+| MONICA      | ACADEMY DINOSAUR |
+| ESTHER      | ACADEMY DINOSAUR |
+| PAULINE     | ACADEMY DINOSAUR |
+| EMMA        | ACADEMY DINOSAUR |
+| JUANITA     | ACADEMY DINOSAUR |
+| ANITA       | ACADEMY DINOSAUR |
+| RHONDA      | ACADEMY DINOSAUR |
+| HAZEL       | ACADEMY DINOSAUR |
+| AMBER       | ACADEMY DINOSAUR |
+| EVA         | ACADEMY DINOSAUR |
+| DEBBIE      | ACADEMY DINOSAUR |
+| APRIL       | ACADEMY DINOSAUR |
+| LESLIE      | ACADEMY DINOSAUR |
+| CLARA       | ACADEMY DINOSAUR |
+| LUCILLE     | ACADEMY DINOSAUR |
+| JAMIE       | ACADEMY DINOSAUR |
+| JOANNE      | ACADEMY DINOSAUR |
+| ELEANOR     | ACADEMY DINOSAUR |
+| VALERIE     | ACADEMY DINOSAUR |
+| DANIELLE    | ACADEMY DINOSAUR |
+| MEGAN       | ACADEMY DINOSAUR |
+| ALICIA      | ACADEMY DINOSAUR |
+| SUZANNE     | ACADEMY DINOSAUR |
+| MICHELE     | ACADEMY DINOSAUR |
+| GAIL        | ACADEMY DINOSAUR |
+| BERTHA      | ACADEMY DINOSAUR |
+| DARLENE     | ACADEMY DINOSAUR |
+| VERONICA    | ACADEMY DINOSAUR |
+| JILL        | ACADEMY DINOSAUR |
+| ERIN        | ACADEMY DINOSAUR |
+| GERALDINE   | ACADEMY DINOSAUR |
+| LAUREN      | ACADEMY DINOSAUR |
+| CATHY       | ACADEMY DINOSAUR |
+| JOANN       | ACADEMY DINOSAUR |
+| LORRAINE    | ACADEMY DINOSAUR |
+| LYNN        | ACADEMY DINOSAUR |
+| SALLY       | ACADEMY DINOSAUR |
+| REGINA      | ACADEMY DINOSAUR |
+| ERICA       | ACADEMY DINOSAUR |
+| BEATRICE    | ACADEMY DINOSAUR |
+| DOLORES     | ACADEMY DINOSAUR |
+| BERNICE     | ACADEMY DINOSAUR |
+| AUDREY      | ACADEMY DINOSAUR |
+| YVONNE      | ACADEMY DINOSAUR |
+| ANNETTE     | ACADEMY DINOSAUR |
+| JUNE        | ACADEMY DINOSAUR |
+| SAMANTHA    | ACADEMY DINOSAUR |
+| MARION      | ACADEMY DINOSAUR |
+| DANA        | ACADEMY DINOSAUR |
+| STACY       | ACADEMY DINOSAUR |
+| ANA         | ACADEMY DINOSAUR |
+| RENEE       | ACADEMY DINOSAUR |
+| IDA         | ACADEMY DINOSAUR |
+| VIVIAN      | ACADEMY DINOSAUR |
+| ROBERTA     | ACADEMY DINOSAUR |
+| HOLLY       | ACADEMY DINOSAUR |
+| BRITTANY    | ACADEMY DINOSAUR |
+| MELANIE     | ACADEMY DINOSAUR |
+| LORETTA     | ACADEMY DINOSAUR |
+| YOLANDA     | ACADEMY DINOSAUR |
+| JEANETTE    | ACADEMY DINOSAUR |
+| LAURIE      | ACADEMY DINOSAUR |
+| KATIE       | ACADEMY DINOSAUR |
+| KRISTEN     | ACADEMY DINOSAUR |
+| VANESSA     | ACADEMY DINOSAUR |
+| ALMA        | ACADEMY DINOSAUR |
+| SUE         | ACADEMY DINOSAUR |
+| ELSIE       | ACADEMY DINOSAUR |
+| BETH        | ACADEMY DINOSAUR |
+| JEANNE      | ACADEMY DINOSAUR |
+| VICKI       | ACADEMY DINOSAUR |
+| CARLA       | ACADEMY DINOSAUR |
+| TARA        | ACADEMY DINOSAUR |
+| ROSEMARY    | ACADEMY DINOSAUR |
+| EILEEN      | ACADEMY DINOSAUR |
+| TERRI       | ACADEMY DINOSAUR |
+| GERTRUDE    | ACADEMY DINOSAUR |
+| LUCY        | ACADEMY DINOSAUR |
+| TONYA       | ACADEMY DINOSAUR |
+| ELLA        | ACADEMY DINOSAUR |
+| STACEY      | ACADEMY DINOSAUR |
+| WILMA       | ACADEMY DINOSAUR |
+| GINA        | ACADEMY DINOSAUR |
+| KRISTIN     | ACADEMY DINOSAUR |
+| JESSIE      | ACADEMY DINOSAUR |
+| NATALIE     | ACADEMY DINOSAUR |
+| AGNES       | ACADEMY DINOSAUR |
+| VERA        | ACADEMY DINOSAUR |
+| WILLIE      | ACADEMY DINOSAUR |
+| CHARLENE    | ACADEMY DINOSAUR |
+| BESSIE      | ACADEMY DINOSAUR |
+| DELORES     | ACADEMY DINOSAUR |
+| MELINDA     | ACADEMY DINOSAUR |
+| PEARL       | ACADEMY DINOSAUR |
+| ARLENE      | ACADEMY DINOSAUR |
+| MAUREEN     | ACADEMY DINOSAUR |
+| COLLEEN     | ACADEMY DINOSAUR |
+| ALLISON     | ACADEMY DINOSAUR |
+| TAMARA      | ACADEMY DINOSAUR |
+| JOY         | ACADEMY DINOSAUR |
+| GEORGIA     | ACADEMY DINOSAUR |
+| CONSTANCE   | ACADEMY DINOSAUR |
+| LILLIE      | ACADEMY DINOSAUR |
+| CLAUDIA     | ACADEMY DINOSAUR |
+| JACKIE      | ACADEMY DINOSAUR |
+| MARCIA      | ACADEMY DINOSAUR |
+| TANYA       | ACADEMY DINOSAUR |
+| NELLIE      | ACADEMY DINOSAUR |
+| MINNIE      | ACADEMY DINOSAUR |
+| MARLENE     | ACADEMY DINOSAUR |
+| HEIDI       | ACADEMY DINOSAUR |
+| GLENDA      | ACADEMY DINOSAUR |
+| LYDIA       | ACADEMY DINOSAUR |
+| VIOLA       | ACADEMY DINOSAUR |
+| COURTNEY    | ACADEMY DINOSAUR |
+| MARIAN      | ACADEMY DINOSAUR |
+| STELLA      | ACADEMY DINOSAUR |
+| CAROLINE    | ACADEMY DINOSAUR |
+| DORA        | ACADEMY DINOSAUR |
+| JO          | ACADEMY DINOSAUR |
+| VICKIE      | ACADEMY DINOSAUR |
+| MATTIE      | ACADEMY DINOSAUR |
+| TERRY       | ACADEMY DINOSAUR |
+| MAXINE      | ACADEMY DINOSAUR |
+| IRMA        | ACADEMY DINOSAUR |
+| MABEL       | ACADEMY DINOSAUR |
+| MARSHA      | ACADEMY DINOSAUR |
+| MYRTLE      | ACADEMY DINOSAUR |
+| LENA        | ACADEMY DINOSAUR |
+| CHRISTY     | ACADEMY DINOSAUR |
+| DEANNA      | ACADEMY DINOSAUR |
+| PATSY       | ACADEMY DINOSAUR |
+| HILDA       | ACADEMY DINOSAUR |
+| GWENDOLYN   | ACADEMY DINOSAUR |
+| JENNIE      | ACADEMY DINOSAUR |
+| NORA        | ACADEMY DINOSAUR |
+| MARGIE      | ACADEMY DINOSAUR |
+| NINA        | ACADEMY DINOSAUR |
+| CASSANDRA   | ACADEMY DINOSAUR |
+| LEAH        | ACADEMY DINOSAUR |
+| PENNY       | ACADEMY DINOSAUR |
+| KAY         | ACADEMY DINOSAUR |
+| PRISCILLA   | ACADEMY DINOSAUR |
+| NAOMI       | ACADEMY DINOSAUR |
+| CAROLE      | ACADEMY DINOSAUR |
+| BRANDY      | ACADEMY DINOSAUR |
+| OLGA        | ACADEMY DINOSAUR |
+| BILLIE      | ACADEMY DINOSAUR |
+| DIANNE      | ACADEMY DINOSAUR |
+| TRACEY      | ACADEMY DINOSAUR |
+| LEONA       | ACADEMY DINOSAUR |
+| JENNY       | ACADEMY DINOSAUR |
+| FELICIA     | ACADEMY DINOSAUR |
+| SONIA       | ACADEMY DINOSAUR |
+| MIRIAM      | ACADEMY DINOSAUR |
+| VELMA       | ACADEMY DINOSAUR |
+| BECKY       | ACADEMY DINOSAUR |
+| BOBBIE      | ACADEMY DINOSAUR |
+| VIOLET      | ACADEMY DINOSAUR |
+| KRISTINA    | ACADEMY DINOSAUR |
+| TONI        | ACADEMY DINOSAUR |
+| MISTY       | ACADEMY DINOSAUR |
+| MAE         | ACADEMY DINOSAUR |
+| SHELLY      | ACADEMY DINOSAUR |
+| DAISY       | ACADEMY DINOSAUR |
+| RAMONA      | ACADEMY DINOSAUR |
+| SHERRI      | ACADEMY DINOSAUR |
+| ERIKA       | ACADEMY DINOSAUR |
+| JAMES       | ACADEMY DINOSAUR |
+| JOHN        | ACADEMY DINOSAUR |
+| ROBERT      | ACADEMY DINOSAUR |
+| MICHAEL     | ACADEMY DINOSAUR |
+| WILLIAM     | ACADEMY DINOSAUR |
+| DAVID       | ACADEMY DINOSAUR |
+| RICHARD     | ACADEMY DINOSAUR |
+| CHARLES     | ACADEMY DINOSAUR |
+| JOSEPH      | ACADEMY DINOSAUR |
+| THOMAS      | ACADEMY DINOSAUR |
+| CHRISTOPHER | ACADEMY DINOSAUR |
+| DANIEL      | ACADEMY DINOSAUR |
+| PAUL        | ACADEMY DINOSAUR |
+| MARK        | ACADEMY DINOSAUR |
+| DONALD      | ACADEMY DINOSAUR |
+| GEORGE      | ACADEMY DINOSAUR |
+| KENNETH     | ACADEMY DINOSAUR |
+| STEVEN      | ACADEMY DINOSAUR |
+| EDWARD      | ACADEMY DINOSAUR |
+| BRIAN       | ACADEMY DINOSAUR |
+| RONALD      | ACADEMY DINOSAUR |
+| ANTHONY     | ACADEMY DINOSAUR |
+| KEVIN       | ACADEMY DINOSAUR |
+| JASON       | ACADEMY DINOSAUR |
+| MATTHEW     | ACADEMY DINOSAUR |
+| GARY        | ACADEMY DINOSAUR |
+| TIMOTHY     | ACADEMY DINOSAUR |
+| JOSE        | ACADEMY DINOSAUR |
+| LARRY       | ACADEMY DINOSAUR |
+| JEFFREY     | ACADEMY DINOSAUR |
+| FRANK       | ACADEMY DINOSAUR |
+| SCOTT       | ACADEMY DINOSAUR |
+| ERIC        | ACADEMY DINOSAUR |
+| STEPHEN     | ACADEMY DINOSAUR |
+| ANDREW      | ACADEMY DINOSAUR |
+| RAYMOND     | ACADEMY DINOSAUR |
+| GREGORY     | ACADEMY DINOSAUR |
+| JOSHUA      | ACADEMY DINOSAUR |
+| JERRY       | ACADEMY DINOSAUR |
+| DENNIS      | ACADEMY DINOSAUR |
+| WALTER      | ACADEMY DINOSAUR |
+| PATRICK     | ACADEMY DINOSAUR |
+| PETER       | ACADEMY DINOSAUR |
+| HAROLD      | ACADEMY DINOSAUR |
+| DOUGLAS     | ACADEMY DINOSAUR |
+| HENRY       | ACADEMY DINOSAUR |
+| CARL        | ACADEMY DINOSAUR |
+| ARTHUR      | ACADEMY DINOSAUR |
+| RYAN        | ACADEMY DINOSAUR |
+| ROGER       | ACADEMY DINOSAUR |
+| JOE         | ACADEMY DINOSAUR |
+| JUAN        | ACADEMY DINOSAUR |
+| JACK        | ACADEMY DINOSAUR |
+| ALBERT      | ACADEMY DINOSAUR |
+| JONATHAN    | ACADEMY DINOSAUR |
+| JUSTIN      | ACADEMY DINOSAUR |
+| TERRY       | ACADEMY DINOSAUR |
+| GERALD      | ACADEMY DINOSAUR |
+| KEITH       | ACADEMY DINOSAUR |
+| SAMUEL      | ACADEMY DINOSAUR |
+| WILLIE      | ACADEMY DINOSAUR |
+| RALPH       | ACADEMY DINOSAUR |
+| LAWRENCE    | ACADEMY DINOSAUR |
+| NICHOLAS    | ACADEMY DINOSAUR |
+| ROY         | ACADEMY DINOSAUR |
+| BENJAMIN    | ACADEMY DINOSAUR |
+| BRUCE       | ACADEMY DINOSAUR |
+| BRANDON     | ACADEMY DINOSAUR |
+| ADAM        | ACADEMY DINOSAUR |
+| HARRY       | ACADEMY DINOSAUR |
+| FRED        | ACADEMY DINOSAUR |
+| WAYNE       | ACADEMY DINOSAUR |
+| BILLY       | ACADEMY DINOSAUR |
+| STEVE       | ACADEMY DINOSAUR |
+| LOUIS       | ACADEMY DINOSAUR |
+| JEREMY      | ACADEMY DINOSAUR |
+| AARON       | ACADEMY DINOSAUR |
+| RANDY       | ACADEMY DINOSAUR |
+| HOWARD      | ACADEMY DINOSAUR |
+| EUGENE      | ACADEMY DINOSAUR |
+| CARLOS      | ACADEMY DINOSAUR |
+| RUSSELL     | ACADEMY DINOSAUR |
+| BOBBY       | ACADEMY DINOSAUR |
+| VICTOR      | ACADEMY DINOSAUR |
+| MARTIN      | ACADEMY DINOSAUR |
+| ERNEST      | ACADEMY DINOSAUR |
+| PHILLIP     | ACADEMY DINOSAUR |
+| TODD        | ACADEMY DINOSAUR |
+| JESSE       | ACADEMY DINOSAUR |
+| CRAIG       | ACADEMY DINOSAUR |
+| ALAN        | ACADEMY DINOSAUR |
+| SHAWN       | ACADEMY DINOSAUR |
+| CLARENCE    | ACADEMY DINOSAUR |
+| SEAN        | ACADEMY DINOSAUR |
+| PHILIP      | ACADEMY DINOSAUR |
+| CHRIS       | ACADEMY DINOSAUR |
+| JOHNNY      | ACADEMY DINOSAUR |
+| EARL        | ACADEMY DINOSAUR |
+| JIMMY       | ACADEMY DINOSAUR |
+| ANTONIO     | ACADEMY DINOSAUR |
+| DANNY       | ACADEMY DINOSAUR |
+| BRYAN       | ACADEMY DINOSAUR |
+| TONY        | ACADEMY DINOSAUR |
+| LUIS        | ACADEMY DINOSAUR |
+| MIKE        | ACADEMY DINOSAUR |
+| STANLEY     | ACADEMY DINOSAUR |
+| LEONARD     | ACADEMY DINOSAUR |
+| NATHAN      | ACADEMY DINOSAUR |
+| DALE        | ACADEMY DINOSAUR |
+| MANUEL      | ACADEMY DINOSAUR |
+| RODNEY      | ACADEMY DINOSAUR |
+| CURTIS      | ACADEMY DINOSAUR |
+| NORMAN      | ACADEMY DINOSAUR |
+| ALLEN       | ACADEMY DINOSAUR |
+| MARVIN      | ACADEMY DINOSAUR |
+| VINCENT     | ACADEMY DINOSAUR |
+| GLENN       | ACADEMY DINOSAUR |
+| JEFFERY     | ACADEMY DINOSAUR |
+| TRAVIS      | ACADEMY DINOSAUR |
+| JEFF        | ACADEMY DINOSAUR |
+| CHAD        | ACADEMY DINOSAUR |
+| JACOB       | ACADEMY DINOSAUR |
+| LEE         | ACADEMY DINOSAUR |
+| MELVIN      | ACADEMY DINOSAUR |
+| ALFRED      | ACADEMY DINOSAUR |
+| KYLE        | ACADEMY DINOSAUR |
+| FRANCIS     | ACADEMY DINOSAUR |
+| BRADLEY     | ACADEMY DINOSAUR |
+| JESUS       | ACADEMY DINOSAUR |
+| HERBERT     | ACADEMY DINOSAUR |
+| FREDERICK   | ACADEMY DINOSAUR |
+| RAY         | ACADEMY DINOSAUR |
+| JOEL        | ACADEMY DINOSAUR |
+| EDWIN       | ACADEMY DINOSAUR |
+| DON         | ACADEMY DINOSAUR |
+| EDDIE       | ACADEMY DINOSAUR |
+| RICKY       | ACADEMY DINOSAUR |
+| TROY        | ACADEMY DINOSAUR |
+| RANDALL     | ACADEMY DINOSAUR |
+| BARRY       | ACADEMY DINOSAUR |
+| ALEXANDER   | ACADEMY DINOSAUR |
+| BERNARD     | ACADEMY DINOSAUR |
+| MARIO       | ACADEMY DINOSAUR |
+| LEROY       | ACADEMY DINOSAUR |
+| FRANCISCO   | ACADEMY DINOSAUR |
+| MARCUS      | ACADEMY DINOSAUR |
+| MICHEAL     | ACADEMY DINOSAUR |
+| THEODORE    | ACADEMY DINOSAUR |
+| CLIFFORD    | ACADEMY DINOSAUR |
+| MIGUEL      | ACADEMY DINOSAUR |
+| OSCAR       | ACADEMY DINOSAUR |
+| JAY         | ACADEMY DINOSAUR |
+| JIM         | ACADEMY DINOSAUR |
+| TOM         | ACADEMY DINOSAUR |
+| CALVIN      | ACADEMY DINOSAUR |
+| ALEX        | ACADEMY DINOSAUR |
+| JON         | ACADEMY DINOSAUR |
+| RONNIE      | ACADEMY DINOSAUR |
+| BILL        | ACADEMY DINOSAUR |
+| LLOYD       | ACADEMY DINOSAUR |
+| TOMMY       | ACADEMY DINOSAUR |
+| LEON        | ACADEMY DINOSAUR |
+| DEREK       | ACADEMY DINOSAUR |
+| WARREN      | ACADEMY DINOSAUR |
+| DARRELL     | ACADEMY DINOSAUR |
+| JEROME      | ACADEMY DINOSAUR |
+| FLOYD       | ACADEMY DINOSAUR |
+| LEO         | ACADEMY DINOSAUR |
+| ALVIN       | ACADEMY DINOSAUR |
+| TIM         | ACADEMY DINOSAUR |
+| WESLEY      | ACADEMY DINOSAUR |
+| GORDON      | ACADEMY DINOSAUR |
+| DEAN        | ACADEMY DINOSAUR |
+| GREG        | ACADEMY DINOSAUR |
+| JORGE       | ACADEMY DINOSAUR |
+| DUSTIN      | ACADEMY DINOSAUR |
+| PEDRO       | ACADEMY DINOSAUR |
+| DERRICK     | ACADEMY DINOSAUR |
+| DAN         | ACADEMY DINOSAUR |
+| LEWIS       | ACADEMY DINOSAUR |
+| ZACHARY     | ACADEMY DINOSAUR |
+| COREY       | ACADEMY DINOSAUR |
+| HERMAN      | ACADEMY DINOSAUR |
+| MAURICE     | ACADEMY DINOSAUR |
+| VERNON      | ACADEMY DINOSAUR |
+| ROBERTO     | ACADEMY DINOSAUR |
+| CLYDE       | ACADEMY DINOSAUR |
+| GLEN        | ACADEMY DINOSAUR |
+| HECTOR      | ACADEMY DINOSAUR |
+| SHANE       | ACADEMY DINOSAUR |
+| RICARDO     | ACADEMY DINOSAUR |
+| SAM         | ACADEMY DINOSAUR |
+| RICK        | ACADEMY DINOSAUR |
+| LESTER      | ACADEMY DINOSAUR |
+| BRENT       | ACADEMY DINOSAUR |
+| RAMON       | ACADEMY DINOSAUR |
+| CHARLIE     | ACADEMY DINOSAUR |
+| TYLER       | ACADEMY DINOSAUR |
+| GILBERT     | ACADEMY DINOSAUR |
+| GENE        | ACADEMY DINOSAUR |
+| MARC        | ACADEMY DINOSAUR |
+| REGINALD    | ACADEMY DINOSAUR |
+| RUBEN       | ACADEMY DINOSAUR |
+| BRETT       | ACADEMY DINOSAUR |
+| ANGEL       | ACADEMY DINOSAUR |
+| NATHANIEL   | ACADEMY DINOSAUR |
+| RAFAEL      | ACADEMY DINOSAUR |
+| LESLIE      | ACADEMY DINOSAUR |
+| EDGAR       | ACADEMY DINOSAUR |
+| MILTON      | ACADEMY DINOSAUR |
+| RAUL        | ACADEMY DINOSAUR |
+| BEN         | ACADEMY DINOSAUR |
+| CHESTER     | ACADEMY DINOSAUR |
+| CECIL       | ACADEMY DINOSAUR |
+| DUANE       | ACADEMY DINOSAUR |
+| FRANKLIN    | ACADEMY DINOSAUR |
+| ANDRE       | ACADEMY DINOSAUR |
+| ELMER       | ACADEMY DINOSAUR |
+| BRAD        | ACADEMY DINOSAUR |
+| GABRIEL     | ACADEMY DINOSAUR |
+| RON         | ACADEMY DINOSAUR |
+| MITCHELL    | ACADEMY DINOSAUR |
+| ROLAND      | ACADEMY DINOSAUR |
+| ARNOLD      | ACADEMY DINOSAUR |
+| HARVEY      | ACADEMY DINOSAUR |
+| JARED       | ACADEMY DINOSAUR |
+| ADRIAN      | ACADEMY DINOSAUR |
+| KARL        | ACADEMY DINOSAUR |
+| CORY        | ACADEMY DINOSAUR |
+| CLAUDE      | ACADEMY DINOSAUR |
+| ERIK        | ACADEMY DINOSAUR |
+| DARRYL      | ACADEMY DINOSAUR |
+| JAMIE       | ACADEMY DINOSAUR |
+| NEIL        | ACADEMY DINOSAUR |
+| JESSIE      | ACADEMY DINOSAUR |
+| CHRISTIAN   | ACADEMY DINOSAUR |
+| JAVIER      | ACADEMY DINOSAUR |
+| FERNANDO    | ACADEMY DINOSAUR |
+| CLINTON     | ACADEMY DINOSAUR |
+| TED         | ACADEMY DINOSAUR |
+| MATHEW      | ACADEMY DINOSAUR |
+| TYRONE      | ACADEMY DINOSAUR |
+| DARREN      | ACADEMY DINOSAUR |
+| LONNIE      | ACADEMY DINOSAUR |
+| LANCE       | ACADEMY DINOSAUR |
+| CODY        | ACADEMY DINOSAUR |
+| JULIO       | ACADEMY DINOSAUR |
+| KELLY       | ACADEMY DINOSAUR |
+| KURT        | ACADEMY DINOSAUR |
+| ALLAN       | ACADEMY DINOSAUR |
+| NELSON      | ACADEMY DINOSAUR |
+| GUY         | ACADEMY DINOSAUR |
+| CLAYTON     | ACADEMY DINOSAUR |
+| HUGH        | ACADEMY DINOSAUR |
+| MAX         | ACADEMY DINOSAUR |
+| DWAYNE      | ACADEMY DINOSAUR |
+| DWIGHT      | ACADEMY DINOSAUR |
+| ARMANDO     | ACADEMY DINOSAUR |
+| FELIX       | ACADEMY DINOSAUR |
+| JIMMIE      | ACADEMY DINOSAUR |
+| EVERETT     | ACADEMY DINOSAUR |
+| JORDAN      | ACADEMY DINOSAUR |
+| IAN         | ACADEMY DINOSAUR |
+| WALLACE     | ACADEMY DINOSAUR |
+| KEN         | ACADEMY DINOSAUR |
+| BOB         | ACADEMY DINOSAUR |
+| JAIME       | ACADEMY DINOSAUR |
+| CASEY       | ACADEMY DINOSAUR |
+| ALFREDO     | ACADEMY DINOSAUR |
+| ALBERTO     | ACADEMY DINOSAUR |
+| DAVE        | ACADEMY DINOSAUR |
+| IVAN        | ACADEMY DINOSAUR |
+| JOHNNIE     | ACADEMY DINOSAUR |
+| SIDNEY      | ACADEMY DINOSAUR |
+| BYRON       | ACADEMY DINOSAUR |
+| JULIAN      | ACADEMY DINOSAUR |
+| ISAAC       | ACADEMY DINOSAUR |
+| MORRIS      | ACADEMY DINOSAUR |
+| CLIFTON     | ACADEMY DINOSAUR |
+| WILLARD     | ACADEMY DINOSAUR |
+| DARYL       | ACADEMY DINOSAUR |
+| ROSS        | ACADEMY DINOSAUR |
+| VIRGIL      | ACADEMY DINOSAUR |
+| ANDY        | ACADEMY DINOSAUR |
+| MARSHALL    | ACADEMY DINOSAUR |
+| SALVADOR    | ACADEMY DINOSAUR |
+| PERRY       | ACADEMY DINOSAUR |
+| KIRK        | ACADEMY DINOSAUR |
+| SERGIO      | ACADEMY DINOSAUR |
+| MARION      | ACADEMY DINOSAUR |
+| TRACY       | ACADEMY DINOSAUR |
+| SETH        | ACADEMY DINOSAUR |
+| KENT        | ACADEMY DINOSAUR |
+| TERRANCE    | ACADEMY DINOSAUR |
+| RENE        | ACADEMY DINOSAUR |
+| EDUARDO     | ACADEMY DINOSAUR |
+| TERRENCE    | ACADEMY DINOSAUR |
+| ENRIQUE     | ACADEMY DINOSAUR |
+| FREDDIE     | ACADEMY DINOSAUR |
+| WADE        | ACADEMY DINOSAUR |
+| AUSTIN      | ACADEMY DINOSAUR |
+| MARY        | ACE GOLDFINGER   |
++-------------+------------------+
+600 rows in set (0.0012 sec)
+
+ MySQL  localhost:3306 ssl  sakila  SQL > use eva_2
+Default schema set to `eva_2`.
+Fetching table and column names from `eva_2` for auto-completion... Press ^C to stop.
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from tablaA
+                                      -> ;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
+|  3 | C      |
+|  4 | D      |
++----+--------+
+4 rows in set (0.0004 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from tablaB;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
+|  3 | X      |
+|  4 | Y      |
++----+--------+
+4 rows in set (0.0004 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from tablaA
+                                      -> union
+                                      -> select * from tablaB;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
+|  3 | C      |
+|  4 | D      |
+|  3 | X      |
+|  4 | Y      |
++----+--------+
+6 rows in set (0.0592 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from tablaA union all select * from tablaB;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
+|  3 | C      |
+|  4 | D      |
+|  1 | A      |
+|  2 | B      |
+|  3 | X      |
+|  4 | Y      |
++----+--------+
+8 rows in set (0.1110 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL >

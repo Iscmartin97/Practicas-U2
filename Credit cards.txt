@@ -1,0 +1,22 @@
+Banco
+	Id_banco
+	Nombre
+
+Targetas
+	Nombre
+	Id_banco	
+
+Cliente
+	Id_cliente
+	Nombre
+
+Asignacion de targetas
+	Id_targeta
+	Numero_Targeta
+	Id_Cliente
+	CVV
+	FECHA_EMISION
+	FECHA_EXPIRACION
+	FECHA_CORTE
+	PIN
+	LIMITE_CREDITO

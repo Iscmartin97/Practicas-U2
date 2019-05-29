@@ -1,0 +1,280 @@
+Microsoft Windows [Versión 10.0.17134.590]
+(c) 2018 Microsoft Corporation. Todos los derechos reservados.
+
+C:\Users\Ariel>mysqlsh
+MySQL Shell 8.0.15
+
+Copyright (c) 2016, 2019, Oracle and/or its affiliates. All rights reserved.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching schema names for autocompletion... Press ^C to stop.
+Your MySQL connection id is 30
+Server version: 8.0.15 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+
+ MySQL  localhost:3306 ssl  SQL > use eva_2
+Default schema set to `eva_2`.
+Fetching table and column names from `eva_2` for auto-completion... Press ^C to stop.
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > create table master_2(
+                                      -> id_master int,
+                                      -> nombre varchar(50),
+                                      -> primary key(id_master, nombre));
+Query OK, 0 rows affected (1.7415 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > show create table master_2;
++----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                                                                                                                                                                                       |
++----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| master_2 | CREATE TABLE `master_2` (
+  `id_master` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  PRIMARY KEY (`id_master`,`nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0630 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > alter table master_2 drop primary key;
+Query OK, 0 rows affected (1.5019 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > show create table master_2;
++----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                                                                                                                                                 |
++----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| master_2 | CREATE TABLE `master_2` (
+  `id_master` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0005 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > alter table master_2 add primary key(
+                                      -> id_master,
+                                      -> nombre);
+Query OK, 0 rows affected (1.3461 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > show create table master_2;
++----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                                                                                                                                                                                       |
++----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| master_2 | CREATE TABLE `master_2` (
+  `id_master` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  PRIMARY KEY (`id_master`,`nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0005 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > create table detail_2(
+                                      -> id_detail  key auto_increment,
+                                      -> id_master int,
+                                      -> nomr
+                                      -> ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'key auto_increment,
+id_master int,
+nomr' at line 2
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > create table detail_2(
+                                      -> id_detail int key auto_increment,
+                                      -> id_master int,
+                                      -> nombre varchar(50),
+                                      -> foreign key(id_master, nombre)
+                                      -> references master_2(id_master,nombre)
+                                      -> );
+Query OK, 0 rows affected (0.6922 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > desc master_2;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| id_master | int(11)     | NO   | PRI | NULL    |       |
+| nombre    | varchar(50) | NO   | PRI | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.0023 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > insert into master_2
+                                      -> values(1,'Hola'),(2,'mundo'),(3,'cruel');
+Query OK, 3 rows affected (0.2610 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from master_2;
++-----------+--------+
+| id_master | nombre |
++-----------+--------+
+|         1 | Hola   |
+|         2 | mundo  |
+|         3 | cruel  |
++-----------+--------+
+3 rows in set (0.0005 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > desc detail_2;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| id_detail | int(11)     | NO   | PRI | NULL    | auto_increment |
+| id_master | int(11)     | YES  | MUL | NULL    |                |
+| nombre    | varchar(50) | YES  |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+3 rows in set (0.0021 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > insert into detail_2(id_master,nombre)
+                                      -> values(4,'sda');
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`eva_2`.`detail_2`, CONSTRAINT `detail_2_ibfk_1` FOREIGN KEY (`id_master`, `nombre`) REFERENCES `master_2` (`id_master`, `nombre`))
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > insert into detail_2(id_master,nombre) values(1,'sda');
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`eva_2`.`detail_2`, CONSTRAINT `detail_2_ibfk_1` FOREIGN KEY (`id_master`, `nombre`) REFERENCES `master_2` (`id_master`, `nombre`))
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > insert into detail_2(id_master,nombre) values(1,'Hola');
+Query OK, 1 row affected (0.1789 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL >
+ MySQL  localhost:3306 ssl  eva_2  SQL >
+ MySQL  localhost:3306 ssl  eva_2  SQL > insert into detail_2(id_master,nombre) values(2,'Mundo');
+Query OK, 1 row affected (0.1714 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > alter table drop foreign key;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'drop foreign key' at line 1
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > alter table detail_2 drop foreign key;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > show create table detail_2;
++----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                  |
++----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| detail_2 | CREATE TABLE `detail_2` (
+  `id_detail` int(11) NOT NULL AUTO_INCREMENT,
+  `id_master` int(11) DEFAULT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id_detail`),
+  KEY `id_master` (`id_master`,`nombre`),
+  CONSTRAINT `detail_2_ibfk_1` FOREIGN KEY (`id_master`, `nombre`) REFERENCES `master_2` (`id_master`, `nombre`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0007 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > alter table detail_2 drop constraint detail_2_ibfk;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'constraint detail_2_ibfk' at line 1
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > alter table detail_2 drop foreign key detail_2_ibfk;
+ERROR: 1091 (42000): Can't DROP 'detail_2_ibfk'; check that column/key exists
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > alter table detail_2 drop foreign key detail_2_ibfk_1;
+Query OK, 0 rows affected (0.2692 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > alter table detail_2 add
+                                      -> constraint restriction
+                                      -> foreign key(id_master,nombre)
+                                      -> references master_2(id_master,nombre)
+                                      -> on delete cascade
+                                      -> on update cascade;
+Query OK, 2 rows affected (2.0160 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > select * from detail_2;
++-----------+-----------+--------+
+| id_detail | id_master | nombre |
++-----------+-----------+--------+
+|         3 |         1 | Hola   |
+|         4 |         2 | Mundo  |
++-----------+-----------+--------+
+2 rows in set (0.0007 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > show create table detail_2;
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| detail_2 | CREATE TABLE `detail_2` (
+  `id_detail` int(11) NOT NULL AUTO_INCREMENT,
+  `id_master` int(11) DEFAULT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id_detail`),
+  KEY `restriction` (`id_master`,`nombre`),
+  CONSTRAINT `restriction` FOREIGN KEY (`id_master`, `nombre`) REFERENCES `master_2` (`id_master`, `nombre`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0008 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > alter table detail_2 drop foreign key restriction;
+Query OK, 0 rows affected (0.2343 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > insert into detail_2(id_master, nombre)
+                                      -> values(10,'Dsasda');
+Query OK, 1 row affected (0.1449 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > alter table detail_2 add constraint restriction foreign key(id_master,nombre) references master_2(id_master,nombre) on delete cascade on update cascade;
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`eva_2`.`#sql-1290_1e`, CONSTRAINT `restriction` FOREIGN KEY (`id_master`, `nombre`) REFERENCES `master_2` (`id_master`, `nombre`) ON DELETE CASCADE ON UPDATE CASCADE)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > delete from detail_2 where id_detail=5;
+Query OK, 1 row affected (0.1944 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > alter table detail_2 add constraint restriction foreign key(id_master,nombre) references master_2(id_master,nombre) on delete cascade on update cascade;
+Query OK, 2 rows affected (2.2859 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > create table ventas_anuales(
+                                      -> año int,
+                                      -> cuarto int,
+                                      -> ventas_totales int
+                                      -> primary key(año,cuarto));
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(año,cuarto))' at line 5
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > create table ventas_anuales(
+                                      -> year int,
+                                      -> quarter int,
+                                      -> total_sales int,
+                                      -> primary key(year,quarter));
+Query OK, 0 rows affected (0.5925 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > create table ordenes(
+                                      -> clave int key auto_increment,
+                                      -> year int,
+                                      -> quarter int,
+                                      -> date int,
+                                      -> foreign key(year,quarter)
+                                      -> references ventas_anuales(year,quarter)
+                                      -> on delete cascade
+                                      -> on update cascade);
+Query OK, 0 rows affected (0.7692 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > desc ventas_anuales;
++-------------+---------+------+-----+---------+-------+
+| Field       | Type    | Null | Key | Default | Extra |
++-------------+---------+------+-----+---------+-------+
+| year        | int(11) | NO   | PRI | NULL    |       |
+| quarter     | int(11) | NO   | PRI | NULL    |       |
+| total_sales | int(11) | YES  |     | NULL    |       |
++-------------+---------+------+-----+---------+-------+
+3 rows in set (0.0019 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL > desc ordenes;
++---------+---------+------+-----+---------+----------------+
+| Field   | Type    | Null | Key | Default | Extra          |
++---------+---------+------+-----+---------+----------------+
+| clave   | int(11) | NO   | PRI | NULL    | auto_increment |
+| year    | int(11) | YES  | MUL | NULL    |                |
+| quarter | int(11) | YES  |     | NULL    |                |
+| date    | int(11) | YES  |     | NULL    |                |
++---------+---------+------+-----+---------+----------------+
+4 rows in set (0.0024 sec)
+
+ MySQL  localhost:3306 ssl  eva_2  SQL >
